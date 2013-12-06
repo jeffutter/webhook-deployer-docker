@@ -28,4 +28,4 @@ ADD ./server /server
 RUN cd /server; npm install
 
 WORKDIR /server
-CMD ['forever -d server.js']
+CMD ['forever', '-d', 'server.js']
