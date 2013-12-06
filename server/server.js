@@ -9,7 +9,7 @@ app.router.path('/', function () {
   this.post(function () {
     repo = this.req.body.repository.url.match(/\:(.*)\.git/)[1];
     name = this.req.body.repository.name;
-    exec('repos/'+name+'.sh',function (error, stdout, stderr) {
+    exec('bash repos/'+name+'.sh',function (error, stdout, stderr) {
       console.log('stdout: ' + stdout);
       console.log('stderr: ' + stderr);
       if (error !== null) {
