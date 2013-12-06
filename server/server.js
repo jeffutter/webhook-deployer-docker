@@ -7,18 +7,19 @@ app.use(flatiron.plugins.http);
 app.router.path('/', function () {
 
   this.post(function () {
-    repo = this.req.body.repository.url.match(/\:(.*)\.git/)[1];
-    name = this.req.body.repository.name;
-    console.log('Deploying: '+name);
-    exec('bash repos/'+name+'.sh',function (error, stdout, stderr) {
-      console.log('stdout: ' + stdout);
-      console.log('stderr: ' + stderr);
-      if (error !== null) {
-        console.log('exec error: ' + error);
-      }
+    if(this.req.body.ref == "refs/heads/master") {
+      repo = this.req.body.repository.url.match(/\:(.*)\.git/)[1];
+      name = this.req.body.repository.name;
+      console.log('Deploying: '+name);
+      exec('bash repos/'+name+'.sh',function (error, stdout, stderr) {
+        console.log('stdout: ' + stdout);
+        console.log('stderr: ' + stderr);
+        if (error !== null) {
+          console.log('exec error: ' + error);
+        }
+      });
+      this.res.end();
     });
-    this.res.end();
-  });
 });
 
 app.start(9001, function (err) {
