@@ -21,7 +21,7 @@ RUN mkdir /tmp/ruby;\
   curl ftp://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p353.tar.gz | tar xz;\
   cd ruby-2.0.0-p353;\
   chmod +x configure;\
-  ./configure;\
+  ./configure --disable-install-doc;\
   make;\
   make install;\
   gem install bundler
