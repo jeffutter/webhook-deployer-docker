@@ -27,4 +27,5 @@ ADD ./server /server
 
 RUN cd /server; npm install
 
-CMD ['cd /server; forever -d server.js']
+WORKDIR /server
+CMD ['forever -d server.js']
