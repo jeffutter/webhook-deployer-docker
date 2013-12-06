@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "start": "node ./server.js"
-  }
+  },
   "dependencies": {
     "flatiron": "0.3.9",
     "union": "0.3.8",
