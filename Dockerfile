@@ -7,6 +7,9 @@ RUN echo "deb http://ppa.launchpad.net/chris-lea/node.js/ubuntu precise main" >>
 RUN LC_ALL=C DEBIAN_FRONTEND=noninteractive apt-get update; apt-get upgrade
 RUN LC_ALL=C DEBIAN_FRONTEND=noninteractive apt-get -y install build-essential zlib1g-dev libyaml-dev libssl-dev libgdbm-dev libreadline-dev libncurses5-dev libffi-dev curl git nodejs
 
+RUN echo "install: --no-rdoc --no-ri" > /etc/gemrc;\
+  echo "update: --no-rdoc --no-ri " >> /etc/gemrc
+
 # Install Ruby
 RUN mkdir /tmp/ruby;\
   cd /tmp/ruby;\
