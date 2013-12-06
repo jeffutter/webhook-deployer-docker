@@ -7,6 +7,17 @@ RUN echo "deb http://ppa.launchpad.net/chris-lea/node.js/ubuntu precise main" >>
 RUN LC_ALL=C DEBIAN_FRONTEND=noninteractive apt-get update; apt-get upgrade
 RUN LC_ALL=C DEBIAN_FRONTEND=noninteractive apt-get -y install git nodejs
 
+# Install Ruby
+RUN mkdir /tmp/ruby;\
+  cd /tmp/ruby;\
+  curl ftp://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p353.tar.gz | tar xz;\
+  cd ruby-2.0.0-p353;\
+  chmod +x configure;\
+  ./configure;\
+  make;\
+  make install;\
+  gem install bundler
+
 RUN npm -g install forever
 
 ADD ./server /server
