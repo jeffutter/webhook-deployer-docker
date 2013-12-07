@@ -19,7 +19,8 @@ app.router.path('/', function () {
         }
       });
       this.res.end();
-    });
+    }
+  });
 });
 
 app.start(9001, function (err) {
