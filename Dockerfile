@@ -24,11 +24,7 @@ RUN echo "install: --no-rdoc --no-ri" > /etc/gemrc;\
 
 RUN  gem install bundler
 
-RUN npm -g install forever
-
 ADD ./server /server
 
-RUN cd /server; npm install --quiet
-
 WORKDIR /server
-CMD ["forever", "-d", "server.js"]
+CMD ["./webhook-deployer"]
