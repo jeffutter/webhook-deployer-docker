@@ -3,9 +3,11 @@ package main
 import (
 	//"fmt"
 	"encoding/json"
+	"log"
 	"net/http"
 	"os"
 	"os/exec"
+	"time"
 )
 
 type Webhook struct {
@@ -15,31 +17,44 @@ type Webhook struct {
 	} `json:"repository"`
 }
 
-func indexHandler(res http.ResponseWriter, req *http.Request) {
-	hook := new(Webhook)
-	json.NewDecoder(req.Body).Decode(hook)
+func runner(ch chan *Webhook) {
+	for hook := range ch {
+		log.Printf("Starting %v", hook.Repository.Name)
 
-	origDir, _ := os.Getwd()
-	//fmt.Println(os.Getwd())
-	os.Chdir("repos/" + hook.Repository.Name)
+		time.Sleep(10 * time.Second)
 
-	cmd := exec.Command("git", "pull")
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	cmd.Run()
+		origDir, _ := os.Getwd()
+		//fmt.Println(os.Getwd())
+		os.Chdir("repos/" + hook.Repository.Name)
 
-	os.Chdir(origDir)
-	//fmt.Println(os.Getwd())
+		cmd := exec.Command("git", "pull")
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		cmd.Run()
 
-	cmd = exec.Command("bash", "repos/"+hook.Repository.Name+".sh")
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	cmd.Run()
+		os.Chdir(origDir)
+		//fmt.Println(os.Getwd())
 
-	res.Header().Set("Content-Type", "application/json; charset=utf-8")
+		cmd = exec.Command("bash", "repos/"+hook.Repository.Name+".sh")
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		cmd.Run()
+		log.Printf("Finished %v", hook.Repository.Name)
+	}
 }
 
 func main() {
-	http.HandleFunc("/", indexHandler)
+	ch := make(chan *Webhook, 10)
+	go runner(ch)
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		hook := new(Webhook)
+		json.NewDecoder(r.Body).Decode(hook)
+
+		ch <- hook
+		log.Printf("Queued %v", hook.Repository.Name)
+
+		w.WriteHeader(200)
+	})
 	http.ListenAndServe(":9001", nil)
 }

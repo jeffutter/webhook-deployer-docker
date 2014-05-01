@@ -5,13 +5,12 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
-RUN apt-get update
-RUN apt-get -y install python-software-properties;\
+RUN apt-get -y install software-properties-common;\
     apt-add-repository ppa:brightbox/ruby-ng;\
     apt-add-repository ppa:chris-lea/node.js;\
-    echo "deb http://archive.ubuntu.com/ubuntu/ precise main universe" > /etc/apt/sources.list;\
-    echo "deb http://archive.ubuntu.com/ubuntu/ precise-security main universe " >> /etc/apt/sources.list;\
-    echo "deb http://archive.ubuntu.com/ubuntu/ precise-updates main universe" >> /etc/apt/sources.list
+    echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe" > /etc/apt/sources.list;\
+    echo "deb http://archive.ubuntu.com/ubuntu/ trusty-security main universe " >> /etc/apt/sources.list;\
+    echo "deb http://archive.ubuntu.com/ubuntu/ trusty-updates main universe" >> /etc/apt/sources.list
 RUN apt-get update
 
 RUN locale-gen en_US.UTF-8
