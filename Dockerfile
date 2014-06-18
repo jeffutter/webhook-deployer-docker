@@ -21,7 +21,7 @@ RUN LC_ALL=en_US.UTF-8 DEBIAN_FRONTEND=noninteractive apt-get -y install build-e
 RUN echo "install: --no-rdoc --no-ri" > /etc/gemrc;\
   echo "update: --no-rdoc --no-ri " >> /etc/gemrc
 
-RUN  gem install bundler
+RUN gem install bundler
 
 ADD ./server /server
 
